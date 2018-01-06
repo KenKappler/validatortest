@@ -23,5 +23,5 @@ contract Owned {
 
 	function setOwner(address _new) public only_owner { NewOwner(owner, _new); owner = _new; }
 
-	address public owner; //= 0xed26d0930ddb9ac127c7b511db77d6719c119efd;
+	address public owner = 0xed26d0930ddb9ac127c7b511db77d6719c119efd;
 }

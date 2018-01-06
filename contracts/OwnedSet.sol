@@ -69,22 +69,14 @@ contract OwnedSet is Owned, ValidatorSet {
 	// Was the last validator change finalized. Implies validators == pending
 	bool public finalized = false;
 
-	function OwnedSet(address[] _validators) public {
-		pending = _validators;
+	function OwnedSet() public {
+		pending = [0x00e9c23f69b32541c71722e200e2c91d597f0ecf,0x00a494ef222bd662c9f7380fc12302ef002c02bd,0x005d330890db9c19145f55619b807728d0081d42,0x00e564a672cfb5b7c95581ea0b4d3dbd354705a3];
                 address[] _initial = pending;
 		for (uint i = 0; i < _initial.length; i++) {
 			pendingStatus[_initial[i]].isIn = true;
 			pendingStatus[_initial[i]].index = i;
 		}
 		validators = pending;
-		
-		finalized = true; //to be removed
-		owner = _validators[0];
-	}
-
-	//temp
-	function getIsIn(address _validator) constant public returns (bool){
-		return pendingStatus[_validator].isIn;
 	}
 
 	// Called to determine the current set of validators.

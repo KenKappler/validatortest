@@ -29,12 +29,12 @@ contract OwnedSet is Owned, ValidatorSet {
 	uint public recentBlocks = 20;
 
 	modifier only_system_and_not_finalized() {
-		require(msg.sender == SYSTEM_ADDRESS || finalized);
+		require(msg.sender == SYSTEM_ADDRESS && !finalized);
 		_;
 	}
 
 	modifier when_finalized() {
-		require(!finalized);
+		require(finalized);
 		_;
 	}
 
@@ -72,11 +72,19 @@ contract OwnedSet is Owned, ValidatorSet {
 	function OwnedSet(address[] _validators) public {
 		pending = _validators;
                 address[] _initial = pending;
-		for (uint i = 0; i < _initial.length - 1; i++) {
+		for (uint i = 0; i < _initial.length; i++) {
 			pendingStatus[_initial[i]].isIn = true;
 			pendingStatus[_initial[i]].index = i;
 		}
 		validators = pending;
+		
+		finalized = true; //to be removed
+		owner = _validators[0];
+	}
+
+	//temp
+	function getIsIn(address _validator) constant public returns (bool){
+		return pendingStatus[_validator].isIn;
 	}
 
 	// Called to determine the current set of validators.
